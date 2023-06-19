@@ -1,0 +1,114 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+private:
+	int data;
+	Node* next;
+public:
+	friend class LinkedList;
+};
+
+class LinkedList {
+private:
+	Node* head;
+	Node* tail;
+public:
+	LinkedList() {
+		head = NULL;
+		tail = NULL;
+	}
+	bool empty() {
+		return head == NULL;
+	}
+	int front() {
+		if (!empty()) {
+			return head->data;
+		}
+		else {
+			cout << "-1\n";
+			return 0;
+		}
+	}
+	void addFront(int x) {
+		Node* n = new Node;
+		if (empty()) {
+			tail = n;
+		}
+		n->data = x;
+		n->next = head;
+		head = n;
+	}
+	void removeFront() {
+		if (empty()) {
+			cout << "-1\n";
+			return;
+		}
+		else {
+			Node* old = head;
+			head = old->next;
+			cout << old->data << endl;
+			delete old;
+			if (empty()) {
+				tail = NULL;
+			}
+		}
+	}
+	void addBack(int x) {
+		Node* n = new Node;
+		n->data = x;
+		n->next = NULL;
+		if (empty()) {
+			head = tail = n;
+		}
+		else {
+			tail->next = n;
+			tail = n;
+		}
+	}
+	void showList() {
+		if (empty()) {
+			cout << "-1";
+		}
+		else {
+			Node* n = head;
+			while (n != tail) {
+				cout << n->data << " ";
+				n = n->next;
+			}
+			if (n = tail) {
+				cout << n->data;
+			}
+		}
+		cout << endl;
+	}
+};
+
+int main() {
+	int T;
+	string s;
+	int x;
+	LinkedList li;
+	cin >> T;
+	for (int i = 0; i < T; i++) {
+		cin >> s;
+		if (s == "showList") {
+			li.showList();
+		}
+		else if (s == "empty") {
+			cout << li.empty() << endl;
+		}
+		else if (s == "addFront") {
+			cin >> x;
+			li.addFront(x);
+		}
+		else if (s == "addBack") {
+			cin >> x;
+			li.addBack(x);
+		}
+		else if (s == "removeFront") {
+			li.removeFront();
+		}
+	}
+	return 0;
+}

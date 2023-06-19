@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+private:
+	int data;
+	Node* next;
+
+	friend class CirLinkedList;
+};
+
+class CirLinkedList {
+private:
+	Node* head;
+	Node* tail;
+	Node* prev;
+	Node* cur;
+public:
+	CirLinkedList() {
+		head = NULL;
+		tail = NULL;
+		prev = NULL;
+		cur = NULL;
+	}
+	bool empty() {
+		return head == NULL;
+	}
+	void addBack(int e) {
+		Node* n = new Node;
+		n->data = e;
+		if (empty()) {
+			head = tail = n;
+			n->next = n;
+		}
+		else {
+			tail->next = n;
+			tail = n;
+			n->next = head;
+		}
+	}
+	void Delete(int x) {
+		cur = head;
+		prev = tail;
+		for (int i = 0; i < x; i++) {
+			cur = cur->next;
+			prev = prev->next;
+			// x값이 커도 계속 돌아갈 수 있음
+		}
+		if (cur == head) {
+			head = cur->next;
+			delete cur;
+			tail->next = head;
+		}
+		else if (cur == tail) {
+			tail = prev;
+			delete cur;
+			tail->next = head;
+		}
+		else {
+			prev->next = cur->next;
+			delete cur;
+		}
+	}
+	void showList() {
+		Node* cur = head;
+		while (cur != tail) {
+			cout << cur->data << " ";
+			cur = cur->next;
+		}
+		cout << cur->data << endl;
+	}
+};
+
+int main() {
+	int T;
+	cin >> T;
+	string s;
+	for (int i = 0; i < T; i++) {
+		CirLinkedList li;
+
+		
+		for (int j = 0; j < 10; j++) {
+			int tmp;
+			cin >> tmp;
+			li.addBack(tmp);
+		}
+		for (int j = 0; j < 3; j++) {
+			cin >> s;
+			if (s == "Delete") {
+				int tmp;
+				cin >> tmp;
+				li.Delete(tmp);
+			}
+		}
+		li.showList();
+	}
+
+	return 0;
+}

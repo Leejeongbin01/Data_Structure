@@ -1,1 +1,97 @@
+#include <iostream>
+using namespace std;
 
+class ArrayQueue {
+private:
+	int* Q;
+	int cap;
+	int f;
+	int r;
+	int n;
+public:
+	ArrayQueue(int size) {
+		Q = new int[size];
+		this->cap = size;
+		f = 0;
+		r = 0;
+		n = 0;
+	}
+	~ArrayQueue() {}
+	int size() {
+		cout << n << endl;
+		return n;
+	}
+	bool isEmpty() {
+		return n == 0;
+	}
+	void front() {
+		if (!isEmpty()) {
+			cout << Q[f] << endl;
+		}
+		else {
+			cout << "Empty" << endl;
+		}
+	}
+	void rear() {
+		if (!isEmpty()) {
+			cout << Q[r-1] << endl;
+		}
+		else {
+			cout << "Empty" << endl;
+		}
+	}
+	void enqueue(int x) {
+		if (n == cap) {
+			cout << "Full" << endl;
+		}
+		else {
+			Q[r] = x;
+			r = (r + 1) % cap;
+			n++;
+		}
+	}
+	int dequeue() {
+		if (isEmpty()) {
+			cout << "Empty" << endl;
+			return 0;
+		}
+		else {
+			cout << Q[f] << endl;
+			f = (f + 1) % cap;
+			n--;
+			return Q[f];
+		}
+	}
+};
+
+int main() {
+	int size, n;
+	string s;
+	cin >> size >> n;
+	ArrayQueue Q(size);
+
+	for (int i = 0; i < n; i++) {
+		cin >> s;
+		if (s == "isEmpty") {
+			cout << Q.isEmpty() << endl;
+		}
+		else if (s == "size") {
+			Q.size();
+		}
+		else if (s == "enqueue") {
+			int x;
+			cin >> x;
+			Q.enqueue(x);
+		}
+		else if (s == "front") {
+			Q.front();
+		}
+		else if (s == "rear") {
+			Q.rear();
+		}
+		else if (s == "dequeue") {
+			Q.dequeue();
+		}
+	}
+	return 0;
+}

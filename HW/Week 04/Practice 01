@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+class ArrayStack {
+private:
+	int* st;
+	int cap;
+	int n;
+public:
+	ArrayStack(int num) {
+		this->cap = num;
+		this->st = new int[num];
+		this->n = -1;
+	}
+	int size() {
+		return n + 1;
+	}
+	bool empty() {
+		return n == -1;
+	}
+	int top() {
+		if (!empty()) {
+			cout << st[n] << endl;
+		}
+		else {
+			cout << -1 << endl;
+		}
+		return st[n];
+	}
+	void push(int x) {
+		n++;
+		st[n] = x;
+	}
+	void pop() {
+		if (empty()) {
+			cout << -1 << endl;
+		}
+		else {
+			cout << st[n] << endl;
+			n--;
+		}
+	}
+};
+
+int main() {
+	int T,x;
+	cin >> T;
+	string s;
+	ArrayStack st(100);
+	for (int i = 0; i < T; i++) {
+		cin >> s;
+		if (s == "empty") {
+			cout << st.empty() << endl;
+		}
+		else if (s == "top") {
+			st.top();
+		}
+		else if (s == "pop") {
+			st.pop();
+		}
+		else if (s == "push") {
+			cin >> x;
+			st.push(x);
+		}
+		else if (s == "size") {
+			cout << st.size() << endl;
+		}
+	}
+}

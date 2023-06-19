@@ -1,0 +1,67 @@
+#include <iostream>
+using namespace std;
+
+class Stack {
+private:
+	int* st;
+	int cap;
+	int n;
+public:
+	Stack(int cap = 100) {
+		st = new int[cap];
+		this->cap = cap;
+		n = -1;
+	}
+	void push(int x) {
+		n++;
+		st[n] = x;
+	}
+	int pop() {
+		n--;
+		return st[n+1];
+		
+	}
+	void cal(string exp) {
+		Stack TmpSt;
+		char token;
+		int len = exp.length();
+
+		for (int i = 0; i < len; i++) {
+			token = exp[i];
+			if ('0' <= token && token <= '9') {
+				int x = token - '0';
+				TmpSt.push(x);
+			}
+			else {
+				int n1 = TmpSt.pop();
+				int n2 = TmpSt.pop();
+				if (token == '+') {
+					int n3 = n2 + n1;
+					TmpSt.push(n3);
+				}
+				else if (token == '-') {
+					int n3 = n2 - n1;
+					TmpSt.push(n3);
+				}
+				else if (token == '*') {
+					int n3 = n2 * n1;
+					TmpSt.push(n3);
+				} 
+			}
+		}
+		cout << TmpSt.pop() << endl;
+	}
+};
+
+int main() {
+	int T;
+	cin >> T;
+	string s;
+	Stack st;
+	for (int i = 0; i < T; i++) {
+		cin >> s;
+		st.cal(s);
+	}
+	return 0;
+	
+}

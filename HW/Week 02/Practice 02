@@ -1,0 +1,65 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() {
+	int T,num;
+	cin >> T;
+	for (int i = 0; i < T; i++) {
+		cin >> num;
+		int* arr = new int[num];
+		for (int j = 0; j < num; j++) {
+			int tmp;
+			cin >> tmp;
+			arr[j] = tmp;
+		}
+		// 배열을 쓰지 않고 arr*로 동적할당
+
+		int Korea = 0, Japan = 0, China = 0;
+		int Korea_avr, Japan_avr, China_avr;
+		int Kcnt = 0, Jcnt = 0, Ccnt = 0;
+		for (int j = 0; j < num; j++) {
+			if (j % 3 == 0) {
+				Korea += arr[j];
+				if (arr[j] != 0) {
+					Kcnt++;
+				}
+			}
+			else if (j % 3 == 1) {
+				Japan += arr[j];
+				if (arr[j] != 0) {
+					Jcnt++;
+				}
+			}
+			else if(j%3==2){
+				China += arr[j];
+				if (arr[j] != 0) {
+					Ccnt++;
+				}
+			}
+		}
+		if (Kcnt != 0) {
+			Korea_avr = floor(Korea / Kcnt);
+		}
+		else {
+			Korea_avr = 0;
+		}
+		if (Jcnt != 0) {
+			Japan_avr = floor(Japan / Jcnt);
+		}
+		else {
+			Japan_avr = 0;
+		}
+		if (Ccnt != 0) {
+			China_avr = floor(China / Ccnt);
+		}
+		else {
+			China_avr = 0;
+		}
+
+		cout << Korea << ' ' << Japan << ' ' << China << '\n';
+		cout << Korea_avr << ' ' << Japan_avr << ' ' << China_avr << '\n';
+		delete[]arr;
+	}
+	return 0;
+}

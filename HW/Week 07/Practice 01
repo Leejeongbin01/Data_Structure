@@ -1,0 +1,120 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Node {
+public:
+	int data;
+	Node* parent;
+	vector<Node*> child;
+
+	Node(int d=0) {
+		data = d;
+		parent = NULL;
+	}
+	void insertChild(Node* n) {
+		child.push_back(n);
+	}
+};
+
+class Tree {
+private:
+	Node* root;
+	vector<Node*> nodeList;
+public:
+	Tree(int d) {
+		root = new Node(d);
+		nodeList.push_back(root);
+	}
+	void insert(int x, int y) {
+		// 노드가 있는지 없는지를 파악해야함
+		int cnt = 0;
+		for (int i = 0; i < nodeList.size(); i++) {
+			if (nodeList[i]->data == x) {
+				Node* par = nodeList[i];
+				Node* tmp = new Node(y);
+				tmp->parent = par;
+				par->insertChild(tmp);
+				nodeList.push_back(tmp);
+			}
+			else {
+				cnt++;
+			}
+		}
+		if (cnt == nodeList.size()) {
+			cout << -1 << endl;
+		}
+	}
+	void printChild(int x) {
+		int cnt = 0;
+		for (int i = 0; i < nodeList.size(); i++) {
+			if (nodeList[i]->data == x) {
+				Node* par = nodeList[i];
+				if (par->child.size() == 0) {
+					cout << 0 << endl;
+				}
+				else {
+					for (int j = 0; j < par->child.size(); j++) {
+						cout << par->child[j]->data << ' ';
+					}
+					cout << endl;
+				}
+			}
+			else {
+				cnt++;
+			}
+		}
+		if (cnt == nodeList.size()) {
+			cout << -1 << endl;
+		}
+	}
+	void printDepth(int x) {
+		int cnt = 0;
+		if (root->data == x) {
+			cout << 0 << endl;
+		}
+		else {
+			for (int i = 0; i < nodeList.size(); i++) {
+				if (nodeList[i]->data == x) {
+					int d = 0;
+					Node* tmp = nodeList[i];
+					while (tmp->parent != root) {
+						tmp = tmp->parent;
+						d++;
+					}
+					d++;
+					cout << d << endl;
+				}
+				else {
+					cnt++;
+				}
+			}
+			if (cnt == nodeList.size()) {
+				cout << -1 << endl;
+			}
+		}
+	}
+};
+
+int main() {
+	Tree t(1);
+	int n, x, y;
+	cin >> n;
+	string s;
+	for (int i = 0; i < n; i++) {
+		cin >> s;
+		if (s == "insert") {
+			cin >> x >> y;
+			t.insert(x, y);
+		}
+		else if (s == "printChild") {
+			cin >> x;
+			t.printChild(x);
+		}
+		else if (s == "printDepth") {
+			cin >> x;
+			t.printDepth(x);
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,182 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class minHeap {
+private:
+	vector<int> v;
+	int n;
+	int root;
+public:
+	minHeap() {
+		v.push_back(-1);
+		n = 0;
+		root = 1;
+	}
+	void swap(int e1, int e2) {
+		int tmp = v[e1];
+		v[e1] = v[e2];
+		v[e2] = tmp;
+	}
+	void upHeap(int idx) {
+		if (v[idx] < v[idx / 2]) {
+			swap(idx, idx / 2);
+			upHeap(idx / 2);
+		}
+	}
+	void downHeap(int idx) {
+		if ((idx * 2) + 1 > n) {
+			if (idx * 2 <= n && v[idx] > v[idx * 2]) {
+				swap(idx, idx * 2);
+			}
+		}
+		else {
+			if (v[idx * 2] > v[(idx * 2) + 1] && v[idx] > v[idx * 2 + 1]) {
+				swap(idx, idx * 2 + 1);
+				downHeap(idx * 2 + 1);
+			}
+			else if (v[idx * 2]<v[idx * 2 + 1] && v[idx]>v[idx * 2]) {
+				swap(idx, idx * 2);
+				downHeap(idx * 2);
+			}
+			else if (v[idx * 2] == v[idx * 2 + 1] && v[idx] > v[idx * 2]) {
+				swap(idx, idx * 2);
+				downHeap(idx * 2);
+			}
+		}
+	}
+	void insert(int e) {
+		if (n == 0) {
+			v.push_back(e);
+			n++;
+		}
+		else {
+			v.push_back(e);
+			n++;
+			upHeap(n);
+		}
+	}
+	int pop() {
+		int value = v[root];
+		v[root] = v[n];
+		n--;
+		v.pop_back();
+		if (n >= 2) {
+			downHeap(root);
+		}
+		return value;
+	}
+	void print1(int x) {
+		cout << v[x] << endl;
+	}
+
+	void print2(int x) {
+		vector<int> v2;
+		int count = n;
+		for (int i{ 1 }; i <= count; i++) {
+			v2.push_back(pop());
+		}
+		cout << v2[x - 1] << endl;
+	}
+};
+
+class maxHeap {
+private:
+	vector<int> v;
+	int n;
+	int root;
+public:
+	maxHeap() {
+		v.push_back(-1);
+		n = 0;
+		root = 1;
+	}
+	void swap(int idx1, int idx2) {
+		int tmp = v[idx1];
+		v[idx1] = v[idx2];
+		v[idx2] = tmp;
+	}
+	void print1(int x) {
+		cout << v[x] << endl;
+	}
+
+	void print2(int x) {
+		vector<int> v2;
+		int count = n;
+		for (int i{ 1 }; i <= count; i++) {
+			v2.push_back(pop());
+		}
+		cout << v2[x - 1] << endl;
+	}
+	void insert(int e) {
+		if (n == 0) {
+			v.push_back(e);
+			n++;
+		}
+		else {
+			v.push_back(e);
+			n++;
+			upHeap(n);
+		}
+	}
+	int pop() {
+		int value = v[root];
+		v[root] = v[n];
+		n--;
+		v.pop_back();
+		if (n >= 2) {
+			downHeap(root);
+		}
+		return value;
+	}
+	void upHeap(int idx) {
+		if (v[idx] > v[idx / 2]) {
+			swap(idx, idx / 2);
+			upHeap(idx / 2);
+		}
+	}
+	void downHeap(int idx) {
+		if (idx * 2 + 1 > n) {
+			if (idx * 2 <= n && v[idx] < v[idx * 2]) {
+				swap(idx, idx * 2);
+			}
+		}
+		else {
+			if (v[idx*2]>v[idx*2+1]&&v[idx]<v[idx*2]) {
+				swap(idx, idx * 2);
+				downHeap(idx * 2);
+			}
+			else if (v[idx * 2] < v[idx * 2 + 1] && v[idx] < v[idx * 2 + 1]) {
+				swap(idx, idx * 2 + 1);
+				downHeap(idx * 2 + 1);
+			}
+			else if (v[idx*2]==v[idx*2+1]&&v[idx]<v[idx*2]) {
+				swap(idx, idx * 2);
+				downHeap(idx * 2);
+			}
+		}
+	}
+};
+
+int main() {
+	int t;
+	cin >> t;
+	for (int i = 0; i < t; i++) {
+		minHeap m1;
+		maxHeap m2;
+
+		int n, p;
+		cin >> n >> p;
+		for (int i = 0; i < n; i++) {
+			int x;
+			cin >> x;
+			m1.insert(x);
+			m2.insert(x);
+		}
+		m1.print1(p);
+		m1.print2(p);
+		m2.print1(p);
+		m2.print2(p);
+	}
+	return 0;
+}

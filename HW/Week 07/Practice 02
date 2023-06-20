@@ -1,0 +1,151 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Node {
+public:
+	int data;
+	Node* parent;
+	vector<Node*> child;
+
+	Node(int d = 0) {
+		data = d;
+		parent = NULL;
+	}
+	void insertChild(Node* n) {
+		child.push_back(n);
+	}
+};
+
+class Tree {
+public:
+	Node* root;
+	vector<Node*> nodeList;
+
+	Tree(int d) {
+		root = new Node(d);
+		nodeList.push_back(root);
+	}
+	void insert(int x, int y) {
+		// 노드가 있는지 없는지를 파악해야함
+		int cnt = 0;
+		for (int i = 0; i < nodeList.size(); i++) {
+			if (nodeList[i]->data == x) {
+				Node* par = nodeList[i];
+				Node* tmp = new Node(y);
+				tmp->parent = par;
+				par->insertChild(tmp);
+				nodeList.push_back(tmp);
+			}
+			else {
+				cnt++;
+			}
+		}
+		if (cnt == nodeList.size()) {
+			cout << -1 << endl;
+		}
+	}
+	void printChild(int x) {
+		int cnt = 0;
+		for (int i = 0; i < nodeList.size(); i++) {
+			if (nodeList[i]->data == x) {
+				Node* par = nodeList[i];
+				if (par->child.size() == 0) {
+					cout << 0 << endl;
+				}
+				else {
+					for (int j = 0; j < par->child.size(); j++) {
+						cout << par->child[j]->data << ' ';
+					}
+					cout << endl;
+				}
+			}
+			else {
+				cnt++;
+			}
+		}
+		if (cnt == nodeList.size()) {
+			cout << -1 << endl;
+		}
+	}
+	void printDepth(int x) {
+		int cnt = 0;
+		if (root->data == x) {
+			cout << 0 << endl;
+		}
+		else {
+			for (int i = 0; i < nodeList.size(); i++) {
+				if (nodeList[i]->data == x) {
+					int d = 0;
+					Node* tmp = nodeList[i];
+					while (tmp->parent != root) {
+						tmp = tmp->parent;
+						d++;
+					}
+					d++;
+					cout << d << endl;
+				}
+				else {
+					cnt++;
+				}
+			}
+			if (cnt == nodeList.size()) {
+				cout << -1 << endl;
+			}
+		}
+	}
+	void preorder(Node*n) {
+		cout << n->data << " ";
+		for (Node* tmp : n->child) {
+			preorder(tmp);
+		}
+	}
+	void postorder(Node*n) {
+		for (Node* tmp : n->child) {
+			postorder(tmp);
+		}
+		cout << n->data << " ";
+	}
+	void depth() {
+		int lar = 0;
+		for (int i = 0; i < nodeList.size(); i++) {
+			Node* n = nodeList[i];
+			int cnt = 0;
+			if (n == root) {
+				continue;
+			}
+			else {
+				while (n->parent != root) {
+					n = n->parent;
+					cnt++;
+				}
+				cnt++;
+				if (cnt > lar) {
+					lar = cnt;
+				}
+			}
+		}
+		cout << lar << endl;
+	}
+};
+
+int main() {
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		Tree t(1);
+		int  num;
+		cin >> num;
+		for (int j = 0; j < num; j++) {
+			int x, y;
+			cin >> x >> y;
+			t.insert(x, y);
+		}
+		t.preorder(t.root);
+		cout << endl;
+		t.postorder(t.root);
+		cout << endl;
+		t.depth();
+	}
+	return 0;
+}

@@ -1,0 +1,126 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Node {
+public:
+	int key;
+	Node* par;
+	Node* right;
+	Node* left;
+
+	Node(int key) {
+		this->key = key;
+		par = right = left = NULL;
+	}
+};
+
+class BST {
+public:
+	Node* root;
+	vector<Node*> v;
+	int size;
+
+	BST() {
+		size = 0;
+		root = NULL;
+	}
+	~BST() {
+		Destructor(root);
+	}
+	void Destructor(Node* n) {
+		if (n == NULL) {
+			return;
+		}
+		if (n->left != NULL) {
+			Destructor(n->left);
+		}
+		if (n->right != NULL) {
+			Destructor(n->right);
+		}
+		delete(n);
+	}
+	Node* search(Node* cur, int key) {
+		if (cur == NULL) {
+			return NULL;
+		}
+		if (cur->key == key) {
+			return cur;
+		}
+		else if (cur->key < key) {
+			return search(cur->right, key);
+		}
+		else {
+			return search(cur->left, key);
+		}
+	}
+	void insert(int key) {
+		if (search(root, key) != NULL) {
+			return;
+		}
+		Node* n = new Node(key);
+		if (root == NULL) {
+			root = n;
+			return;
+		}
+		Node* cur = root;
+		Node* par = NULL;
+		while (cur != NULL) {
+			par = cur;
+			if (cur->key < key) {
+				cur = cur->right;
+			}
+			else {
+				cur = cur->left;
+			}
+		}
+		n->par = par;
+		v.push_back(n);
+		if (par->key < key) {
+			par->right = n;
+		}
+		else {
+			par->left = n;
+		}
+		size++;
+	}
+	void printHeight() {
+		int H = 0;
+		for (int i = 0; i < size; i++) {
+			Node* tmp = v[i];
+			if (tmp == root) {
+				continue;
+			}
+			else {
+				int cnt = 0;
+				while (tmp->par != root) {
+					cnt++;
+					tmp = tmp->par;
+				}
+				cnt++;
+				if (H < cnt) {
+					H = cnt;
+				}
+			}
+		}
+		cout << H << endl;
+	}
+};
+
+int main() {
+	int t;
+	cin >> t;
+	for (int i = 0; i < t; i++) {
+		BST tree;
+		int n;
+		cin >> n;
+		for (int j = 0; j < n; j++) {
+			int x;
+			cin >> x;
+			tree.insert(x);
+		}
+		tree.printHeight();
+	}
+
+	return 0;
+}

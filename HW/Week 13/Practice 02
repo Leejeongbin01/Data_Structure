@@ -1,1 +1,75 @@
+#include <iostream>
+#include <vector>
+using namespace std;
 
+int main() {
+	vector<int> vertex;
+	int cnt = 0;
+	vector<vector<bool>> graph(2001, vector<bool>(2001));
+
+	int n, m, k;
+	cin >> n >> m >> k;
+
+	for (int i = 0; i < n; i++) {
+		int v;
+		cin >> v;
+		vertex.push_back(v);
+	}
+	for (int i = 0; i < m; i++) {
+		int num1, num2;
+		cin >> num1 >> num2;
+		int cnt1 = 0;
+		int cnt2 = 0;
+		if (graph[num1][num2] == false &&
+			graph[num2][num1] == false) {
+			for (int i = 0; i < vertex.size(); i++) {
+				if (vertex[i] != num1) {
+					cnt1++;
+				}
+				if (vertex[i] != num2) {
+					cnt2++;
+				}
+			}
+			if (cnt1 == vertex.size() || cnt2 == vertex.size()) {
+				cout << -1 << endl;
+			}
+			else {
+				graph[num1][num2] = 1;
+				graph[num2][num1] = 1;
+				cnt++;
+			}
+		}
+		else {
+			cout << -1 << endl;
+		}
+	}
+	cout << vertex.size() << " " << cnt << endl;
+
+	for (int i = 0; i < k; i++) {
+		int cnt1 = 0;
+		int cnt2 = 0;
+		int n1, n2;
+		cin >> n1 >> n2;
+
+		for (int i = 0; i < vertex.size(); i++) {
+			if (vertex[i] != n1) {
+				cnt1++;
+			}
+			if (vertex[i] != n2) {
+				cnt2++;
+			}
+		}
+		if (cnt1 == vertex.size() || cnt2 == vertex.size()) {
+			cout << -1 << endl;
+		}
+		else {
+			if (graph[n1][n2] != 0 && graph[n2][n1] != 0) {
+				cout << 1 << endl;
+			}
+			else {
+				cout << 0 << endl;
+			}
+		}
+	}
+	return 0;
+}

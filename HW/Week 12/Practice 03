@@ -1,0 +1,95 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+#define MAX 353333
+#define NOITEM 0
+#define ISITEM 1
+#define AVAILABLE 2
+
+class cell {
+public:
+	int key;
+	int flag;
+
+	cell() {
+		key = -1;
+		flag = NOITEM;
+	}
+};
+
+cell hashArr[MAX];
+int size = 0;
+void tableclear() {
+	for (int i{ 0 }; i < MAX; i++) {
+		hashArr[i].key = -1;
+		hashArr[i].flag = NOITEM;
+	}
+}
+int hashFunc(int idx) {
+	return idx % idx;
+}
+int hashFunc2(int idx) {
+	return(17 - (idx % 17));
+}
+void insert(int key) {
+	int idx = hashFunc(key);
+	if (hashArr[idx].flag == NOITEM) {
+		hashArr[idx].key = key;
+		hashArr[idx].flag = ISITEM;
+	}
+	else {
+		while (hashArr[idx].flag != NOITEM) {
+			idx = (idx + hashFunc2(key));
+		}
+		hashArr[idx].flag = ISITEM;
+		hashArr[idx].key = key;
+	}
+}
+void search(int key) {
+	int idx = hashFunc(key);
+	int p = 1;
+	while (p != MAX) {
+		cell c = hashArr[idx];
+		if (c.flag == NULL) {
+			cout << 0 << " " << p << endl;
+			break;
+		}
+		else if (c.key == key) {
+			cout << 1 << " " << p << endl;
+			break;
+		}
+		else {
+			idx = (idx + hashFunc2(key));
+			p++;
+		}
+	}
+}
+int main() {
+	int t;
+	cin >> t;
+
+	for (int i{ 0 }; i < t; i++) {
+		int n;
+		cin >> n;
+
+		for (int i{ 0 }; i < n; i++) {
+			int value;
+			cin >> value;
+			insert(value);
+		}
+
+		int m;
+		cin >> m;
+
+		for (int i{ 0 }; i < m; i++) {
+			int value;
+			cin >> value;
+			search(value);
+		}
+		tableclear();
+	}
+
+
+	return 0;
+}

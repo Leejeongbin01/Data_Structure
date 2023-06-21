@@ -2,11 +2,14 @@
 using namespace std;
 
 class Node {
-private:
+public:
 	int data;
 	Node* next;
-public:
-	friend class LinkedList;
+
+	Node() {
+		data = 0;
+		next = NULL;
+	}
 };
 
 class LinkedList {
@@ -21,36 +24,54 @@ public:
 	bool empty() {
 		return head == NULL;
 	}
-	int front() {
-		if (!empty()) {
-			return head->data;
+	void front() {
+		if (empty()) {
+			cout << -1 << endl;
 		}
 		else {
-			cout << "-1\n";
-			return 0;
+			cout << head->data << endl;
 		}
 	}
 	void addFront(int x) {
 		Node* n = new Node;
+		n->data = x;
 		if (empty()) {
 			tail = n;
+			n->next = head;
+			head = n;
 		}
-		n->data = x;
-		n->next = head;
-		head = n;
+		else {
+			n->next = head;
+			head = n;
+		}
 	}
 	void removeFront() {
 		if (empty()) {
-			cout << "-1\n";
-			return;
+			cout << -1 << endl;
 		}
 		else {
-			Node* old = head;
-			head = old->next;
-			cout << old->data << endl;
-			delete old;
+			Node* tmp = head;
+			cout << tmp->data << endl;
+			head = head->next;
+			delete tmp;
 			if (empty()) {
+				head = NULL;
 				tail = NULL;
+			}
+		}
+	}
+	void showList() {
+		if (empty()) {
+			cout << -1;
+		}
+		else {
+			Node* tmp = head;
+			while (tmp != tail) {
+				cout << tmp->data << " ";
+				tmp = tmp->next;
+			}
+			if (tmp == tail) {
+				cout << tmp->data << endl;
 			}
 		}
 	}
@@ -66,48 +87,40 @@ public:
 			tail = n;
 		}
 	}
-	void showList() {
-		if (empty()) {
-			cout << "-1";
-		}
-		else {
-			Node* n = head;
-			while (n != tail) {
-				cout << n->data << " ";
-				n = n->next;
-			}
-			if (n = tail) {
-				cout << n->data;
-			}
-		}
-		cout << endl;
-	}
 };
 
 int main() {
 	int T;
+	cin >> T;
 	string s;
 	int x;
-	LinkedList li;
-	cin >> T;
-	for (int i = 0; i < T; i++) {
+	LinkedList ll;
+	while (T--) {
 		cin >> s;
-		if (s == "showList") {
-			li.showList();
+		if (s == "empty") {
+			if (ll.empty()) {
+				cout << 1 << endl;
+			}
+			else {
+				cout << 0 << endl;
+			}
 		}
-		else if (s == "empty") {
-			cout << li.empty() << endl;
+		else if (s == "front") {
+			ll.front();
 		}
 		else if (s == "addFront") {
 			cin >> x;
-			li.addFront(x);
+			ll.addFront(x);
+		}
+		else if (s == "removeFront") {
+			ll.removeFront();
+		}
+		else if (s == "showList") {
+			ll.showList();
 		}
 		else if (s == "addBack") {
 			cin >> x;
-			li.addBack(x);
-		}
-		else if (s == "removeFront") {
-			li.removeFront();
+			ll.addBack(x);
 		}
 	}
 	return 0;
